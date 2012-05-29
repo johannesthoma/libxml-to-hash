@@ -9,8 +9,9 @@ This adds to from_lib_xml method to the Hash class which uses libxml (which
 is much faster than ReXML) to convert a XML string into a Hash"
   s.authors     = ["Johannes Thoma"]
   s.email       = 'johannes.thoma@gmx.at'
-  s.files       = ["lib/libxml-to-hash.rb"]
+  s.files       = ["lib/libxml_to_hash.rb"]
   s.homepage    = 'http://rubygems.org/gems/libxml-to-hash'
+  s.add_dependency("libxml-ruby")
 
   s.require_paths = %w[lib]
 end
