@@ -1,11 +1,13 @@
-== LibXML-To-Hash
+LibXML-To-Hash
+==============
 
 The libxml-to-hash gem provides a thin layer between libxml and
 the Ruby world. It exports a method Hash#from_lib_xml which takes
 a string argument containing XML and returns a newly created
 hash that contains the XML in a parsed form. 
 
-= Installation
+Installation
+------------
 
 Without bundler, do:
 
@@ -23,7 +25,8 @@ to install the gem.
 
 You can omit the s in https if https should not work on your site.
 
-= Usage
+Usage
+-----
 
 First, do a:
 
@@ -39,23 +42,26 @@ will return a hash:
 
 which is simpler than the output from libxml itself.
 
-= The hash format
+The hash format
+---------------
 
 Keys are always strings.
 Values might be one of the following:
 
-  *) Strings
-  *) Arrays
-  *) LibxmlToHash::XmlNodes if both content and attributes are given.
+* Strings
+* Arrays
+* LibxmlToHash::XmlNodes if both content and attributes are given.
 
 See the unit test file for examples.
 
-= Why not use Hash#from_xml?
+Why not use Hash#from_xml?
+--------------------------
 
 This uses ReXML which is (at least the version we use) about 
 50 times slower than libxml.
 
-= Authors 
+Authors
+-------
 
 This gem was written by Johannes Thoma <johannes.thoma@gmx.at> based
 on work of Kristof Klee and a Stackoverflow posting.
