@@ -26,7 +26,12 @@ class LibXmlNode < Object
   end
 
   def ==(other)
-    @content == other.content and @attributes == other.attributes
+    if other.class == LibXmlNode
+      if @content == other.content and @attributes == other.attributes
+        return true
+      end
+    end
+    false
   end
 end
 
@@ -46,22 +51,31 @@ class Hash
 
     def xml_node_to_hash(node) 
       # If we are at the root of the document, start the hash 
+puts "node #{node}"
       if node.element? 
         result_hash_attributes = {}
         node.attributes.each do |attribute|
           result_hash_attributes[attribute.name.to_s] = attribute.value
         end
 
+puts "attributes = #{result_hash_attributes}"
         if node.children? 
+puts "node #{node} has children"
           result_hash = {}
           node.each_child do |child| 
             result = xml_node_to_hash(child) 
 
-            if child.name == "text"
-              if !child.next? and !child.prev?
-                return LibXmlNode.new(result, result_hash_attributes)
-              end
-            elsif result_hash[child.name.to_s]
+#            if result.class == String
+#              if !child.next? and !child.prev
+#puts "child: #{child} children? #{child.children?}"
+#                if (result_hash_attributes != {}) or (child.children?)
+#puts "KARIN #{result} node is #{node}"
+#                  return LibXmlNode.new(result, result_hash_attributes)
+#                end
+#puts "ZAK node is #{node}"
+#                return result
+#              end
+            if result_hash[child.name.to_s]
               if result_hash[child.name.to_s].is_a?(Object::Array)
                 result_hash[child.name.to_s] << result
               else
@@ -76,9 +90,11 @@ class Hash
           return LibXmlNode.new({}, result_hash_attributes)
         end 
       else 
+puts "content is #{node.content.to_s}"
         return node.content.to_s 
       end 
-    end          
+      return nil
+    end
   end
 end
 
