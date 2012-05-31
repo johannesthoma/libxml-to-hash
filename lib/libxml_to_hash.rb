@@ -1,5 +1,4 @@
 # -*- encoding : utf-8 -*-
-begin
 
 # USAGE: Hash.from_libxml(YOUR_XML_STRING)
 require 'xml/libxml'
@@ -81,9 +80,5 @@ class Hash
       end 
     end          
   end
-end
-
-rescue MissingSourceFile => e
-  # no libxml => use rails default rexml
 end
 
