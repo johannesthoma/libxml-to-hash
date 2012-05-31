@@ -60,11 +60,7 @@ class Hash
 
             if child.name == "text"
               if !child.next? and !child.prev?
-                if result_hash_attributes == {} 
-                  return result
-                else
-                  return LibXmlNode.new(result, result_hash_attributes)
-                end
+                return LibXmlNode.new(result, result_hash_attributes)
               end
             elsif result_hash[child.name.to_s]
               if result_hash[child.name.to_s].is_a?(Object::Array)
@@ -76,13 +72,9 @@ class Hash
               result_hash[child.name.to_s] = result
             end
           end
-          if result_hash_attributes == {} 
-            return result_hash
-          else
-            return LibXmlNode.new(result_hash, result_hash_attributes)
-          end
+          return LibXmlNode.new(result_hash, result_hash_attributes)
         else 
-          return result_hash_attributes
+          return LibXmlNode.new({}, result_hash_attributes)
         end 
       else 
         return node.content.to_s 
