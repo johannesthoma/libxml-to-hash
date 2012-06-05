@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = 'libxml-to-hash'
-  s.version     = '0.0.1'
-  s.date        = '2012-05-29'
+  s.version     = '0.1.0'
+  s.date        = '2012-06-05'
   s.summary     = "A simple library to convert XML strings to hashes using libxml"
   s.description = "A simple library to convert XML strings to hashes using libxml
 
