@@ -90,8 +90,8 @@ class Hash
         result = XML::Parser.string(xml).parse 
         return { result.root.name.to_s => xml_node_to_hash(result.root)} 
       rescue Exception => e
-#        raise # only for debugging
-        nil
+        raise # only for debugging
+#        nil
             # raise your custom exception here
       end
     end 
@@ -105,13 +105,13 @@ class Hash
 
         node.each_child do |child| 
           if child.name.to_s == "text"
-            n.add_text node.content.to_s
+            n.set_text node.content.to_s
           else
             n.add_node child.name.to_s, xml_node_to_hash(child) 
           end
         end
       else 
-        n.add_text node.content.to_s 
+        n.set_text node.content.to_s 
       end 
       return n.simplify
     end
