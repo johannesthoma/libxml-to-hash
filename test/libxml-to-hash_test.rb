@@ -29,4 +29,16 @@ class LibXmlToHashTest < Test::Unit::TestCase
     assert_nil Hash.from_libxml("<karin")
     assert_raise LibXML::XML::Error do Hash.from_libxml!("<karin") end
   end
+
+  def test_iterable
+    for s in "karin".iterable do
+      assert_equal "karin", s
+    end
+    for h in {"karin" => "zak"}.iterable do
+      assert_equal({"karin" => "zak"}, h)
+    end
+    for n in LibXmlNode.create({}, {"zak" => "lebt"}, "").iterable do
+      assert_equal LibXmlNode.create({}, {"zak" => "lebt"}, ""), n
+    end
+  end
 end

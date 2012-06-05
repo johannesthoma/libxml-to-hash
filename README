@@ -2,7 +2,7 @@ LibXML-To-Hash
 ==============
 
 The libxml-to-hash gem provides a thin layer between libxml and
-the Ruby world. It exports a method Hash#from_lib_xml which takes
+the Ruby world. It exports a method Hash#from_libxml which takes
 a string argument containing XML and returns a newly created
 hash that contains the XML in a parsed form. 
 
@@ -34,7 +34,7 @@ First, do a:
 
 Then, 
 
-  h = Hash.from_lib_xml("<root><node>Content</node></root>")
+  h = Hash.from_libxml("<root><node>Content</node></root>")
 
 will return a hash:
 
@@ -53,6 +53,24 @@ Values might be one of the following:
 * LibxmlToHash::XmlNodes if both content and attributes are given.
 
 See the unit test file for examples.
+
+Iterables
+---------
+
+All objects that serve as values respond to iterable, which returns
+an object that repsonds to each (actually an Array). That is a for
+loop for those object will always work. Suppose you have
+
+  h = Hash.from_libxml("<root><node>Content</node></root>")
+
+Then 
+
+  for f in h["root"]["node"].iterable do
+ 
+works even though there is only one node object (if there were more
+than one, the value is an Array anyway). This is a convenience method
+that is very handy, because there is no need to look at the class
+of the value object when more than one is possible.
 
 Why not use Hash#from_xml?
 --------------------------

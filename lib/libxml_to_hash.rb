@@ -51,10 +51,6 @@ class LibXmlNode < Object
     end
   end
   
-# Special case: libxml gives only total text, not partial.
-# That is: For
-# <karin>text<zak/>moretext</karin>
-# there is one child node containing textmoretext.
   def add_text(t)
     @text << t
   end
@@ -79,9 +75,17 @@ class LibXmlNode < Object
     end
     false
   end
+
+  def iterable
+    [self]
+  end
 end
 
 class Hash 
+  def iterable
+    [self]
+  end
+
   class << self
     def from_libxml!(xml, strict=true) 
       XML.default_load_external_dtd = false
@@ -120,3 +124,8 @@ class Hash
   end
 end
 
+class String
+  def iterable
+    [self]
+  end
+end
