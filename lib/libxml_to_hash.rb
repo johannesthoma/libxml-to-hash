@@ -17,14 +17,22 @@ require 'xml/libxml'
 # Usage: LibXmlNode.new("karin", "zak")
 
 class LibXmlNode < Object
-  attr_reader :subnodes
-  attr_reader :attributes
-  attr_reader :text
+  attr_accessor :subnodes
+  attr_accessor :attributes
+  attr_accessor :text
 
-  def initialize()
+  def initialize
     @subnodes = {}
     @attributes = {}
     @text = ""
+  end
+
+  def self.create(n, a, t)
+    l = LibXmlNode.new
+    l.subnodes = n
+    l.attributes = a
+    l.text = t
+    l
   end
 
   def add_attribute(key, value)
@@ -33,7 +41,7 @@ class LibXmlNode < Object
     
   def add_node(key, value)
     if @subnodes[key] 
-      if @subnodes[key].isa? Array
+      if @subnodes[key].is_a? Array
         @subnodes[key] << [value]
       else
         @subnodes[key] = [@subnodes[key], value]
@@ -42,33 +50,30 @@ class LibXmlNode < Object
       @subnodes[key] = value
     end
   end
+  
+# Special case: libxml gives only total text, not partial.
+# That is: For
+# <karin>text<zak/>moretext</karin>
+# there is one child node containing textmoretext.
+  def set_text(t)
+    @text = t
+  end
 
   def simplify
-    if @subnodes and @attributes.empty? and @text == ""
-      return @subnodes
-    end
-    if @text != "" and not @attributes.empty? and not @subnodes
-      return @text
+    if @attributes.empty?
+      if @text == ""
+        return @subnodes
+      end
+      if @subnodes == {}
+        return @text
+      end
     end
     return self
   end
-      
-private:
-  def merge_into_hash!(the_hash, the_new_hash)
-    for x in the_new_hash do
-      if the_hash.has_key? x.key
-        if the_hash[x.key] is_a? Array
-          the_hash[x.key] << 
-        
-    @attributes.merge a
-  end
-
-  def add_subnode(n)
-    @subnodes.merge 
-
+ 
   def ==(other)
     if other.class == LibXmlNode
-      if @content == other.content and @attributes == other.attributes and @text == other.text
+      if @subnodes == other.subnodes and @attributes == other.attributes and @text == other.text
         return true
       end
     end
@@ -86,52 +91,29 @@ class Hash
         return { result.root.name.to_s => xml_node_to_hash(result.root)} 
       rescue Exception => e
 #        raise # only for debugging
+        nil
             # raise your custom exception here
       end
     end 
 
     def xml_node_to_hash(node) 
-      # If we are at the root of the document, start the hash 
       n = LibXmlNode.new
       if node.element? 
         node.attributes.each do |attribute|
           n.add_attribute attribute.name.to_s, attribute.value
         end
 
-        if node.children? 
-          result_hash = {}
-          node.each_child do |child| 
-            result = xml_node_to_hash(child) 
-
-#            if result.class == String
-#              if !child.next? and !child.prev
-#puts "child: #{child} children? #{child.children?}"
-#                if (result_hash_attributes != {}) or (child.children?)
-#puts "KARIN #{result} node is #{node}"
-#                  return LibXmlNode.new(result, result_hash_attributes)
-#                end
-#puts "ZAK node is #{node}"
-#                return result
-#              end
-            if result_hash[child.name.to_s]
-              if result_hash[child.name.to_s].is_a?(Object::Array)
-                result_hash[child.name.to_s] << result
-              else
-                result_hash[child.name.to_s] = [result_hash[child.name.to_s]] << result
-              end
-            else 
-              result_hash[child.name.to_s] = result
-            end
+        node.each_child do |child| 
+          if child.name.to_s == "text"
+            n.add_text node.content.to_s
+          else
+            n.add_node child.name.to_s, xml_node_to_hash(child) 
           end
-          return LibXmlNode.new(result_hash, result_hash_attributes)
-        else 
-          return LibXmlNode.new({}, result_hash_attributes)
-        end 
+        end
       else 
-puts "content is #{node.content.to_s}"
-        return node.content.to_s 
+        n.add_text node.content.to_s 
       end 
-      return nil
+      return n.simplify
     end
   end
 end
