@@ -48,8 +48,8 @@ The hash format
 Keys are always strings.
 Values might be one of the following:
 
-* Strings
-* Arrays
+* Strings (when there is only text content)
+* Arrays (where there is more than one subnode like in <root><subnode>x</subnode><subnode>y</subnode></root>
 * LibxmlToHash::XmlNodes if both content and attributes are given.
 
 See the unit test file for examples.
