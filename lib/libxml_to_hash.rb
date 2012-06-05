@@ -14,6 +14,7 @@ require 'xml/libxml'
 # allows for easy testing for the class (which we have
 # to do anyway since hash values may be Strings, Arrays
 # or other Hashes already)
+# Update: No need for testing when using the iterable method.
 # Usage: LibXmlNode.new("karin", "zak")
 
 class LibXmlNode < Object
@@ -127,5 +128,11 @@ end
 class String
   def iterable
     [self]
+  end
+end
+
+class Array
+  def iterable
+    self
   end
 end

@@ -40,5 +40,8 @@ class LibXmlToHashTest < Test::Unit::TestCase
     for n in LibXmlNode.create({}, {"zak" => "lebt"}, "").iterable do
       assert_equal LibXmlNode.create({}, {"zak" => "lebt"}, ""), n
     end
+    for a in ["karin"].iterable do
+      assert_equal "karin", a
+    end
   end
 end
