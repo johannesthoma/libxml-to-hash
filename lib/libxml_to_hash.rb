@@ -17,17 +17,58 @@ require 'xml/libxml'
 # Usage: LibXmlNode.new("karin", "zak")
 
 class LibXmlNode < Object
-  attr_reader :content
+  attr_reader :subnodes
   attr_reader :attributes
+  attr_reader :text
 
-  def initialize(content, attributes)
-    @content = content
-    @attributes = attributes
+  def initialize()
+    @subnodes = {}
+    @attributes = {}
+    @text = ""
   end
+
+  def add_attribute(key, value)
+    @attributes[key] = value
+  end
+    
+  def add_node(key, value)
+    if @subnodes[key] 
+      if @subnodes[key].isa? Array
+        @subnodes[key] << [value]
+      else
+        @subnodes[key] = [@subnodes[key], value]
+      end
+    else
+      @subnodes[key] = value
+    end
+  end
+
+  def simplify
+    if @subnodes and @attributes.empty? and @text == ""
+      return @subnodes
+    end
+    if @text != "" and not @attributes.empty? and not @subnodes
+      return @text
+    end
+    return self
+  end
+      
+private:
+  def merge_into_hash!(the_hash, the_new_hash)
+    for x in the_new_hash do
+      if the_hash.has_key? x.key
+        if the_hash[x.key] is_a? Array
+          the_hash[x.key] << 
+        
+    @attributes.merge a
+  end
+
+  def add_subnode(n)
+    @subnodes.merge 
 
   def ==(other)
     if other.class == LibXmlNode
-      if @content == other.content and @attributes == other.attributes
+      if @content == other.content and @attributes == other.attributes and @text == other.text
         return true
       end
     end
@@ -51,16 +92,13 @@ class Hash
 
     def xml_node_to_hash(node) 
       # If we are at the root of the document, start the hash 
-puts "node #{node}"
+      n = LibXmlNode.new
       if node.element? 
-        result_hash_attributes = {}
         node.attributes.each do |attribute|
-          result_hash_attributes[attribute.name.to_s] = attribute.value
+          n.add_attribute attribute.name.to_s, attribute.value
         end
 
-puts "attributes = #{result_hash_attributes}"
         if node.children? 
-puts "node #{node} has children"
           result_hash = {}
           node.each_child do |child| 
             result = xml_node_to_hash(child) 
