@@ -55,8 +55,8 @@ class LibXmlNode < Object
 # That is: For
 # <karin>text<zak/>moretext</karin>
 # there is one child node containing textmoretext.
-  def set_text(t)
-    @text = t
+  def add_text(t)
+    @text << t
   end
 
   def simplify
@@ -104,14 +104,14 @@ class Hash
         end
 
         node.each_child do |child| 
-          if child.name.to_s == "text"
-            n.set_text node.content.to_s
+          if child.text?
+            if not child.children?
+              n.add_text child.content.to_s.strip
+            end
           else
             n.add_node child.name.to_s, xml_node_to_hash(child) 
           end
         end
-      else 
-        n.set_text node.content.to_s 
       end 
       return n.simplify
     end
