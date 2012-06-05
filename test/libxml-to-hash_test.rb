@@ -21,7 +21,11 @@ class LibXmlToHashTest < Test::Unit::TestCase
     assert_equal({"karin" => {"zak" => "nicht", "lebt" => "schon", "oder" => {"was" => "nicht" }}}, Hash.from_libxml("<karin><zak>nicht</zak><lebt>schon</lebt><oder><was>nicht</was></oder></karin>"))
     assert_equal({"karin" => LibXmlNode.create({}, {"zak" => "lebt"}, "schon")}, Hash.from_libxml("<karin zak=\"lebt\">schon</karin>"))
     assert_equal({"karin" => LibXmlNode.create({"zak"=>{}}, {}, "textmoretext")}, Hash.from_libxml("<karin>text<zak/>moretext</karin>"))
+  end
+
+  def test_exceptions
     assert_nothing_raised { Hash.from_libxml("<karin") }
     assert_nil Hash.from_libxml("<karin")
+    assert_raise LibXML::XML::Error do Hash.from_libxml!("<karin") end
   end
 end

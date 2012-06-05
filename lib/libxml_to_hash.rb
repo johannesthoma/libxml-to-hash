@@ -83,16 +83,18 @@ end
 
 class Hash 
   class << self
+    def from_libxml!(xml, strict=true) 
+      XML.default_load_external_dtd = false
+      XML.default_pedantic_parser = strict
+      result = XML::Parser.string(xml).parse 
+      return { result.root.name.to_s => xml_node_to_hash(result.root)} 
+    end 
+
     def from_libxml(xml, strict=true) 
       begin
-        XML.default_load_external_dtd = false
-        XML.default_pedantic_parser = strict
-        result = XML::Parser.string(xml).parse 
-        return { result.root.name.to_s => xml_node_to_hash(result.root)} 
+        from_libxml!(xml, strict)
       rescue Exception => e
-        raise # only for debugging
-#        nil
-            # raise your custom exception here
+        nil
       end
     end 
 
