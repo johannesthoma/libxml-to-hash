@@ -41,8 +41,8 @@ class LibXmlNode < Object
     
   def add_node(key, value)
     if @subnodes[key] 
-      if @subnodes[key].is_a? Array
-        @subnodes[key] << [value]
+      if @subnodes[key].is_a? Object::Array
+        @subnodes[key] << value
       else
         @subnodes[key] = [@subnodes[key], value]
       end
