@@ -44,4 +44,12 @@ class LibXmlToHashTest < Test::Unit::TestCase
       assert_equal "karin", a
     end
   end
+
+  def test_to_b
+    assert not("false".to_b)
+    assert not("0".to_b)
+    assert "true".to_b
+    assert "1".to_b
+    assert not("karin".to_b)
+  end
 end

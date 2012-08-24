@@ -129,6 +129,10 @@ class String
   def iterable
     [self]
   end
+
+  def to_b
+    self.upcase == 'TRUE' or self == '1'
+  end
 end
 
 class Array
