@@ -52,4 +52,30 @@ class LibXmlToHashTest < Test::Unit::TestCase
     assert "1".to_b
     assert not("karin".to_b)
   end
+
+  def test_alex_xml
+    assert_equal(
+{"tuvienna"=>
+  {"response"=>
+    [LibXmlNode.create({"confirmed"=>"false", "error"=>"invalid_persnr"}, {"employeeId"=>"1293191270"}, ""),
+     LibXmlNode.create({"confirmed"=>"true"}, {"employeeId"=>"VADE111111"}, ""),
+     LibXmlNode.create({"confirmed"=>"false",
+        "error"=>["invalid_hours", "unknown_person", "deleted"]}, {"employeeId"=>"SKYW111111"}, "")]}},
+     Hash.from_libxml('<?xml version="1.0" encoding="UTF-8"?>
+<tuvienna xmlns="https://tiss.tuwien.ac.at/api/schemas/lecturerResponse/v10" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <response employeeId="1293191270">
+    <confirmed>false</confirmed>
+    <error>invalid_persnr</error>
+  </response>
+  <response employeeId="VADE111111">
+    <confirmed>true</confirmed>
+  </response>
+  <response employeeId="SKYW111111">
+    <confirmed>false</confirmed>
+    <error>invalid_hours</error>
+    <error>unknown_person</error>
+    <error>deleted</error>
+  </response>
+</tuvienna>'))
+  end
 end

@@ -78,6 +78,11 @@ Why not use Hash#from_xml?
 This uses ReXML which is (at least the version we use) about 
 50 times slower than libxml.
 
+Known bugs
+----------
+
+Currently attributes in the root node are not reported.
+
 Authors
 -------
 
