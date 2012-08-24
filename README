@@ -83,6 +83,9 @@ Known bugs
 
 Currently attributes in the root node are not reported.
 
+The xml_node_to_hash helper method shouldn't be in the Hash class.
+There might be name clashes with other methods.
+
 Authors
 -------
 
