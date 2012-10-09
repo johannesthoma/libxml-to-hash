@@ -72,6 +72,14 @@ than one, the value is an Array anyway). This is a convenience method
 that is very handy, because there is no need to look at the class
 of the value object when more than one is possible.
 
+to_libxmlnode method
+--------------------
+The to_libxmlnode method is defined for Hash and String.
+    
+Use this if you are not sure if the object may be either a
+String/Hash or LibXmlNode (both text and subnodes are given)
+to convert the String/Hash to a LibXmlNode.
+
 Why not use Hash#from_xml?
 --------------------------
 
