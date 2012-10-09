@@ -87,6 +87,10 @@ class Hash
     [self]
   end
 
+  def to_libxmlnode
+    LibXmlNode.create(self, {}, "")
+  end
+
   class << self
     def from_libxml!(xml, strict=true) 
       XML.default_load_external_dtd = false
@@ -133,10 +137,18 @@ class String
   def to_b
     self.upcase == 'TRUE' or self == '1'
   end
+
+  def to_libxmlnode
+    LibXmlNode.create({}, {}, self)
+  end
 end
 
 class Array
   def iterable
     self
+  end
+
+  def to_libxmlnode
+    LibXmlNode.create(self, {}, "")
   end
 end

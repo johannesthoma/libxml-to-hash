@@ -78,4 +78,9 @@ class LibXmlToHashTest < Test::Unit::TestCase
   </response>
 </tuvienna>'))
   end
+
+  def test_to_libxmlnode
+    assert_equal "text".to_libxmlnode, LibXmlNode.create({}, {}, "text")
+    assert_equal({"karin" => "zak"}.to_libxmlnode, LibXmlNode.create({"karin" => "zak"}, {}, ""))
+  end
 end
