@@ -30,7 +30,7 @@ Usage
 
 First, do a:
 
-  require 'libxml-to-hash'
+  require 'libxml_to_hash'
 
 Then, 
 
